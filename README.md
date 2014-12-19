@@ -7,9 +7,9 @@ This is a Gulp task that collects settings variables from Sass files for process
 
 Currently the library is only being used—and is deliberately designed for—[Foundation for Apps](https://github.com/zurb/foundation-apps).
 
-# Usage
+## Usage
 
-## Install
+### Install
 
 For now the package is not distributed on npm, but it can be installed from GitHub:
 
@@ -21,7 +21,7 @@ For now the package is not distributed on npm, but it can be installed from GitH
 }
 ```
 
-## Setup
+### Setup
 
 The parser will check every `.scss` file you hand it for text between two specific delimiters.
 
@@ -35,7 +35,7 @@ $container-width: rem-calc(900) !default;
 
 The first line is the starting delimiter, and the last line is the ending delimiter. The second line contains the name of the component, which the parser uses to title the section, and build the table of contents.
 
-## Running the Task
+### Running the Task
 
 The settings parser module exports the entire process as a single function, so you just have to drop it into a Gulp task, along with an array of file paths.
 
