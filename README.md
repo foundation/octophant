@@ -15,9 +15,9 @@ For now the package is not distributed on npm, but it can be installed from GitH
 
 ```json
 {
-  "devDependencies": [
+  "devDependencies": {
     "foundation-settings-parser": "zurb/foundation-settings-parser"
-  ]
+  }
 }
 ```
 

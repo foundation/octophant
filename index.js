@@ -2,7 +2,7 @@
 // This gulp task pulls the variables out of each component's Sass file, and collects them in one settings file.
 // Use it like this:
 // gulp.task('settings', function() {
-//   return require('settings-parser')();
+//   return require('settings-parser')('scss/**/*.scss');
 // });
 
 var concat    = require('gulp-concat')  
@@ -97,7 +97,10 @@ module.exports = function(paths, options) {
     }))
     .pipe(map(function(contents, filename) {
       return contents = contents.toString().split('\n').slice(3, -1).map(function(value) {
-        if (value.indexOf('// $') == 0) return value.slice(3);
+        if (
+          value.indexOf('// $') === 0 ||
+          value.indexOf('//  ') === 0 ||
+          value.indexOf('// )') === 0) return value.slice(3);
         return value;
       }).join('\n');
     }))
