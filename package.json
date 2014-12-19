@@ -2,7 +2,10 @@
   "name": "settings-parser",
   "version": "0.0.1",
   "description": "Parses Sass files to generate a settings file with a table of contents.",
-  "repository": "https://github.com/zurb/foundation-settings-parser.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zurb/foundation-settings-parser.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
