@@ -12,10 +12,12 @@ var gulp       = require('gulp');
 var gutil      = require('gulp-util');
 var ignore     = require('gulp-ignore');
 var inject     = require('gulp-inject-string');
+var rimraf     = require('rimraf-glob');
 var repeatChar = require('./lib/repeatChar');
 var rename     = require('gulp-rename');
 var map        = require('vinyl-map');
 var multiline  = require('multiline');
+var path       = require('path');
 var order      = require('gulp-order');
 var through    = require('through2');
 
@@ -90,6 +92,10 @@ module.exports = function(paths, options) {
     partialsPath: 'build/partials/scss',
     settingsPath: 'scss'
   }, options);
+
+  // Erase the existing files
+  rimraf(path.join(options.partialsPath, '**/*.html'), function() {});
+  rimraf(path.join(options.settingsPath, '_settings.scss'), function() {});
 
   // Format title text with custom title
   titleText = format(titleText, options.title, repeatChar('-', options.title.length));
