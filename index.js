@@ -5,37 +5,35 @@
 //   return require('settings-parser')('scss/**/*.scss');
 // });
 
-var concat    = require('gulp-concat')  
-var extend    = require('util')._extend;
-var format    = require('util').format;
-var gulp      = require('gulp');
-var gutil     = require('gulp-util');
-var ignore    = require('gulp-ignore');
-var inject    = require('gulp-inject-string');
-var rename    = require('gulp-rename');
-var map       = require('vinyl-map');
-var multiline = require('multiline');
-var order     = require('gulp-order');
-var through   = require('through2');
+var concat     = require('gulp-concat')  
+var extend     = require('util')._extend;
+var format     = require('util').format;
+var gulp       = require('gulp');
+var gutil      = require('gulp-util');
+var ignore     = require('gulp-ignore');
+var inject     = require('gulp-inject-string');
+var repeatChar = require('./lib/repeatChar');
+var rename     = require('gulp-rename');
+var map        = require('vinyl-map');
+var multiline  = require('multiline');
+var order      = require('gulp-order');
+var through    = require('through2');
 
 var titleText = multiline(function() {/*
-//
-//  FOUNDATION FOR APPS SETTINGS
-//  ----------------------------
+//  %s
+//  %s
 //
 //  Table of Contents:
 //
 */});
 
+// This function extracts the settings variables from each Sass file it gets.
+// In goes an entire Sass file, out goes a file that's just the settings variables.
 var parseSettings = function(options) {
+  // This counter is used to number each section of the settings file
   var i = 0;
 
-  options = extend({
-    start:   "\/\/\/ @Foundation.settings",
-    end:     "\/\/\/",
-    comment: true
-  }, options);
-
+  // The map function is run on each file you pipe to the parser
   return map(function(contents, filename) {
     // Convert the file to a string
     contents = contents.toString().replace(/(?:\r\n)/mg, "\n");
@@ -77,24 +75,40 @@ var parseSettings = function(options) {
 };
 
 module.exports = function(paths, options) {
+  // The plugin must be called with a string or array of globs
   if (typeof paths === 'undefined') {
     var err = new gutil.PluginError('foundation-settings-parser', {
       message: 'you need to specify paths for the plugin to parse.'
     });
   }
 
+  options = extend({
+    title:        "SETTINGS",
+    start:        "\/\/\/ @Foundation.settings",
+    end:          "\/\/\/",
+    comment:      true,
+    partialsPath: 'build/partials/scss',
+    settingsPath: 'scss'
+  }, options);
+
+  // Format title text with custom title
+  titleText = format(titleText, options.title, repeatChar('-', options.title.length));
+
+  // This stream sets us up by parsing the settings from 
   var stream = gulp.src(paths)
-    .pipe(parseSettings())
+    .pipe(parseSettings(options))
     .pipe(ignore.exclude(function(file) {
       return file.contents.length === 0;
     }));
 
-  // This stream goes to build/partials, for use in the docs
+  // This stream creates HTML partials, for use in the docs
   stream
+    // Rename the .scss files to .html and remove the underscore in the filename
     .pipe(rename(function(path) {
       path.basename = path.basename.slice(1);
       path.extname = '.html';
     }))
+    // Remove comment marks from lines of Sass only, not actual comments
     .pipe(map(function(contents, filename) {
       return contents = contents.toString().split('\n').slice(3, -1).map(function(value) {
         if (
@@ -104,13 +118,17 @@ module.exports = function(paths, options) {
         return value;
       }).join('\n');
     }))
-    .pipe(gulp.dest('build/partials/scss'));
+    // Output to destination folder
+    .pipe(gulp.dest(options.partialsPath));
 
-  // This stream goes to scss, to be used as the settings file
+  // This stream creates a settings file
   return stream
+    // Combine the clusters of variables into one file
     .pipe(concat('_settings.scss'))
+    // Insert the title text and table of contents at the beginning of the file
     .pipe(map(function(contents, filename) {
       return titleText + '\n\n' + contents.toString();
     }))
-    .pipe(gulp.dest('scss'));
+    // Output to destination folder
+    .pipe(gulp.dest(options.settingsPath));
 }
