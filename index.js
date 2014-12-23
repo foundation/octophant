@@ -133,7 +133,7 @@ module.exports = function(paths, options) {
     .pipe(concat('_settings.scss'))
     // Insert the title text and table of contents at the beginning of the file
     .pipe(map(function(contents, filename) {
-      return titleText + '\n\n' + contents.toString();
+      return titleText + '\n\n@import "helpers/functions";\n\n' + contents.toString();
     }))
     // Output to destination folder
     .pipe(gulp.dest(options.settingsPath));
