@@ -41,7 +41,7 @@ var parseSettings = function(options) {
     contents = contents.toString().replace(/(?:\r\n)/mg, "\n");
 
     // Find the variable text
-    var re = new RegExp("(?:"+options.start+"\n)((.|\n)*)(?:\n"+options.end+")", "mg");
+    var re = new RegExp("(?:"+options.start+"\n)((.|\n)*?)(?:\n"+options.end+")", "mg");
     var match = re.exec(contents);
     if (match === null) return '';
 
