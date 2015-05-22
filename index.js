@@ -15,10 +15,10 @@ var inject     = require('gulp-inject-string');
 var rimraf     = require('rimraf-glob');
 var repeatChar = require('./lib/repeatChar');
 var rename     = require('gulp-rename');
-var map        = require('vinyl-map');
 var multiline  = require('multiline');
 var path       = require('path');
 var order      = require('gulp-order');
+var through    = require('through2');
 
 var noop = function() {};
 
@@ -37,9 +37,9 @@ var parseSettings = function(options) {
   var i = 0;
 
   // The map function is run on each file you pipe to the parser
-  return map(function(contents, filename) {
+  return through.obj(function(file, enc, cb) {
     // Convert the file to a string
-    contents = contents.toString().replace(/(?:\r\n)/mg, "\n");
+    contents = file.contents.toString().replace(/(?:\r\n)/mg, "\n");
 
     // Find the variable text
     var re = new RegExp("(?:"+options.start+"\n)((.|\n)*?)(?:\n"+options.end+")", "mg");
@@ -71,9 +71,10 @@ var parseSettings = function(options) {
       %s
     */});
 
-    output = format(output, i, componentName, componentContents, "\n");
+    var newContents = format(output, i, componentName, componentContents, "\n");
+    file.contents = new Buffer(newContents);
 
-    return output;
+    cb(null, file);
   });
 };
 
@@ -110,8 +111,10 @@ module.exports = function(paths, options) {
     // Combine the clusters of variables into one file
     .pipe(concat('_settings.scss'))
     // Insert the title text and table of contents at the beginning of the file
-    .pipe(map(function(contents, filename) {
-      return titleText + '\n\n@import "helpers/functions";\n\n' + contents.toString();
+    .pipe(through.obj(function(file, enc, cb) {
+      var contents = titleText + '\n\n@import "helpers/functions";\n\n' + file.contents.toString();
+      file.contents = new Buffer(contents);
+      cb(null, file);
     }))
     // Output to destination folder
     .pipe(gulp.dest(options.settingsPath));

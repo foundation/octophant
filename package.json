@@ -21,7 +21,7 @@
     "multiline": "^1.0.1",
     "rimraf-glob": "0.0.0",
     "sassdoc": "^2.1.11",
-    "vinyl-map": "^1.0.1"
+    "through2": "^0.6.5"
   },
   "author": "ZURB",
   "license": "MIT",
