@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "gulp": "^3.8.8",
+    "gulp": "^3.8.11",
     "gulp-concat": "^2.4.1",
     "gulp-ignore": "^1.2.1",
     "gulp-inject-string": "0.0.2",
@@ -20,6 +20,7 @@
     "gulp-util": "^3.0.1",
     "multiline": "^1.0.1",
     "rimraf-glob": "0.0.0",
+    "sassdoc": "^2.1.11",
     "vinyl-map": "^1.0.1"
   },
   "author": "ZURB",

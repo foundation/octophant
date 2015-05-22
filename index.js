@@ -20,6 +20,8 @@ var multiline  = require('multiline');
 var path       = require('path');
 var order      = require('gulp-order');
 
+var noop = function() {};
+
 var titleText = multiline(function() {/*
 //  %s
 //  %s
@@ -93,41 +95,18 @@ module.exports = function(paths, options) {
   }, options);
 
   // Erase the existing files
-  rimraf(path.join(options.partialsPath, '**/*.html'), function() {});
-  rimraf(path.join(options.settingsPath, '_settings.scss'), function() {});
+  rimraf(path.join(options.settingsPath, '_settings.scss'), noop);
 
   // Format title text with custom title
   titleText = format(titleText, options.title, repeatChar('-', options.title.length));
 
-  // This stream sets us up by parsing the settings from 
-  var stream = gulp.src(paths)
+  return gulp.src(paths)
+    // Parse the settings from each file
     .pipe(parseSettings(options))
+    // Ignore files that came up empty
     .pipe(ignore.exclude(function(file) {
       return file.contents.length === 0;
-    }));
-
-  // This stream creates HTML partials, for use in the docs
-  stream
-    // Rename the .scss files to .html and remove the underscore in the filename
-    .pipe(rename(function(path) {
-      path.basename = path.basename.slice(1);
-      path.extname = '.html';
     }))
-    // Remove comment marks from lines of Sass only, not actual comments
-    .pipe(map(function(contents, filename) {
-      return contents = contents.toString().split('\n').slice(3, -1).map(function(value) {
-        if (
-          value.indexOf('// $') === 0 ||
-          value.indexOf('//  ') === 0 ||
-          value.indexOf('// )') === 0) return value.slice(3);
-        return value;
-      }).join('\n');
-    }))
-    // Output to destination folder
-    .pipe(gulp.dest(options.partialsPath));
-
-  // This stream creates a settings file
-  return stream
     // Combine the clusters of variables into one file
     .pipe(concat('_settings.scss'))
     // Insert the title text and table of contents at the beginning of the file
