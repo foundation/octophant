@@ -1,6 +1,6 @@
 {
   "name": "settings-parser",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Parses Sass files to generate a settings file with a table of contents.",
   "repository": {
     "type": "git",
@@ -19,9 +19,7 @@
     "gulp-rename": "^1.2.0",
     "gulp-util": "^3.0.1",
     "multiline": "^1.0.1",
-    "rimraf": "^2.2.8",
     "rimraf-glob": "0.0.0",
-    "through2": "^0.6.2",
     "vinyl-map": "^1.0.1"
   },
   "author": "ZURB",

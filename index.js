@@ -19,7 +19,6 @@ var map        = require('vinyl-map');
 var multiline  = require('multiline');
 var path       = require('path');
 var order      = require('gulp-order');
-var through    = require('through2');
 
 var titleText = multiline(function() {/*
 //  %s
