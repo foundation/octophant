@@ -60,6 +60,7 @@ module.exports = function(paths, options) {
     // Format title text with custom title
     titleText = format(titleText, options.title, repeatChar('-', options.title.length));
 
+    // Generate the table of contents
     var n = 1;
     for (var i in data) {
       var c = n < 10 ? ' '+n : n;
@@ -73,7 +74,6 @@ module.exports = function(paths, options) {
     // Iterate through each component
     for (var i in data) {
       var group = data[i];
-
       outputStream.write(format('// %s\n// %s\n\n', i, repeatChar('-', i.length)));
 
       // Iterate through each variable within the component
@@ -83,6 +83,13 @@ module.exports = function(paths, options) {
 
         if (value.length === 1) {
           outputStream.write(format('// $%s: %s;\n', variable.context.name, variable.context.value));
+        }
+        else {
+          value = value.map(function(v, i) {
+            if (i === 0) return v;
+            return '// ' + v;
+          });
+          outputStream.write(format('// $%s: %s;\n', variable.context.name, value.join('\n')));
         }
       }
 
