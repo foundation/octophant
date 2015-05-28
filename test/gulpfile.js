@@ -5,8 +5,7 @@ gulp.task('default', function() {
   var files   = ['_file2.scss', '_file1.scss'];
   var options = {
     title: "Test Settings".toUpperCase(),
-    partialsPath: 'build',
-    settingsPath: 'build'
+    settingsPath: './_settings.scss'
   };
 
   return settingsParser(files, options);
