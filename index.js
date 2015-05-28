@@ -5,23 +5,13 @@
 //   return require('settings-parser')('scss/**/*.scss');
 // });
 
-var concat     = require('gulp-concat')  
 var extend     = require('util')._extend;
 var format     = require('util').format;
 var fs         = require('fs');
-var gulp       = require('gulp');
-var gutil      = require('gulp-util');
-var ignore     = require('gulp-ignore');
-var inject     = require('gulp-inject-string');
 var repeatChar = require('./lib/repeatChar');
-var rename     = require('gulp-rename');
 var multiline  = require('multiline');
 var path       = require('path');
-var order      = require('gulp-order');
 var sassdoc    = require('sassdoc');
-var through    = require('through2');
-
-var noop = function() {};
 
 var titleText = multiline(function() {/*
 //  %s
@@ -40,8 +30,8 @@ module.exports = function(paths, options) {
   }
 
   options = extend({
-    title:        "SETTINGS",
-    output:       '_settings.scss'
+    title:  'Settings',
+    output: '_settings.scss'
   }, options);
 
   sassdoc.parse(paths, { verbose: true }).then(parse);
@@ -96,18 +86,18 @@ module.exports = function(paths, options) {
       outputStream.write('\n');
     }
   }
+}
 
-  function processSassDoc(tree) {
-    var sass = {};
+function processSassDoc(tree) {
+  var sass = {};
 
-    for (var i in tree) {
-      var obj = tree[i];
-      var group = obj.group[0];
+  for (var i in tree) {
+    var obj = tree[i];
+    var group = obj.group[0];
 
-      if (!sass[group]) sass[group] = [];
-      if (obj.context.type === 'variable') sass[group].push(obj);
-    }
-
-    return sass;
+    if (!sass[group]) sass[group] = [];
+    if (obj.context.type === 'variable') sass[group].push(obj);
   }
+
+  return sass;
 }
