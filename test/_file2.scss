@@ -1,14 +1,16 @@
-// Text above
+////
+/// @group two
+////
 
-/// @Foundation.settings
-// Component Two
+/// What's for breakfast
 $breakfast: (
   eggs,
   bacon,
   toast
 );
-$orangeJuice: true;
-$coffee: false;
-///
 
-// Text below
+/// How about orange juice?
+$orangeJuice: true;
+
+/// Or coffee?
+$coffee: false;

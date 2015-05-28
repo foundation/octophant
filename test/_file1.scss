@@ -1,14 +1,16 @@
-// Text above
+////
+/// @group one
+////
 
-/// @Foundation.settings
-// Component One
+/// What is delicious?
 $breakfast: (
   eggs,
   bacon,
   toast
 );
-$orangeJuice: true;
-$coffee: false;
-///
 
-// Text below
+/// Orange juice is aight.
+$orangeJuice: true;
+
+/// Coffee is gross.
+$coffee: false;
