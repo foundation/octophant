@@ -1,15 +1,8 @@
 # Foundation Settings Parser
 
-This is a Gulp task that collects settings variables from Sass files for processing. Right now it does two things:
+A Node library that collects Sass variables out of many files, and then combines them into one file, grouped by component, with a table of contents at the top. We use it at ZURB with the Foundation family of frameworks, to automatically generate settings files.
 
- - Combines the variables into a single `_settings.scss` file, organized by component, with each variable commented out.
- - Outputs each component's variables as an HTML partial, which can be consumed by Angular or Assemble. This allows us to automatically inject each component's Sass variables into the documentation automatically.
-
-Currently the library is only being used—and is deliberately designed for—[Foundation for Apps](https://github.com/zurb/foundation-apps).
-
-## Usage
-
-### Install
+## Installation
 
 For now the package is not distributed on npm, but it can be installed from GitHub:
 
@@ -21,29 +14,47 @@ For now the package is not distributed on npm, but it can be installed from GitH
 }
 ```
 
-### Setup
+## Setup
 
-The parser will check every `.scss` file you hand it for text between two specific delimiters.
+Variables are parsed using SassDoc, which means any variable you want to be found must be documented with a comment that has three slashes.
 
 ```scss
-/// @Foundation.settings
-// Grid
-$total-columns: 12 !default;
-$container-width: rem-calc(900) !default;
-///
+/// This variable will be found by the parser.
+$primary-color: blue;
+
+// This one won't.
+$private-value: 10px;
 ```
 
-The first line is the starting delimiter, and the last line is the ending delimiter. The second line contains the name of the component, which the parser uses to title the section, and build the table of contents.
+Variables are grouped by component. The component is defined by the `@group` a variable belongs to. The group can be set on individual variables, or on every variable in a file using a poster comment.
 
-### Running the Task
+```scss
+////
+/// @group button
+////
 
-The settings parser module exports the entire process as a single function, so you just have to drop it into a Gulp task, along with an array of file paths.
+/// Button background
+$button-background: blue;
 
-```js
-gulp.task('settings', function() {
-  // Get extra weird by calling the module without assigning it to a variable!
-  return require('foundation-settings-parser')([
-    'scss/components/*.scss'
-  ]);
-});
-```
+/// Button color
+$button-color: white;
+``` 
+
+## Usage
+
+### parser(files [, options])
+
+Parses a set of files and creates a new SCSS file with all of the collected variables in one place.
+
+#### files
+
+**Type:** `Array`
+
+An array of files to parse.
+
+#### options
+
+**Type:** `Object`
+
+- `title`: Title to print at the top of the file.
+- `output`: Relative path to output the settings file to.

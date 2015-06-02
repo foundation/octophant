@@ -1,6 +1,6 @@
 {
   "name": "octophant",
-  "version": "0.1.0",
+  "version": "1.0.0-rc.1",
   "description": "Parses Sass files to generate a settings file with a table of contents.",
   "repository": {
     "type": "git",
@@ -8,12 +8,17 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "dependencies": {
+    "capitalize": "^1.0.0",
     "multiline": "^1.0.1",
     "sassdoc": "^2.1.11"
   },
   "author": "ZURB",
-  "license": "MIT"
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  }
 }

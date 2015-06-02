@@ -34,6 +34,11 @@ module.exports = function(paths, options) {
     output: '_settings.scss'
   }, options);
 
+  var groups = {
+    'one': 'Component One',
+    'two': 'Component Two'
+  }
+
   sassdoc.parse(paths, { verbose: true }).then(parse);
 
   function parse(data) {
@@ -46,9 +51,10 @@ module.exports = function(paths, options) {
     }
 
     var outputStream = fs.createWriteStream(outputPath, {flags: 'w'});
+    var title = groups[options.title] || options.title;
 
     // Format title text with custom title
-    titleText = format(titleText, options.title, repeatChar('-', options.title.length));
+    titleText = format(titleText, title, repeatChar('-', title.length));
 
     // Generate the table of contents
     var n = 1;
@@ -64,7 +70,8 @@ module.exports = function(paths, options) {
     // Iterate through each component
     for (var i in data) {
       var group = data[i];
-      outputStream.write(format('// %s\n// %s\n\n', i, repeatChar('-', i.length)));
+      var title = groups[i] || i;
+      outputStream.write(format('// %s\n// %s\n\n', title, repeatChar('-', title.length)));
 
       // Iterate through each variable within the component
       for (var j in group) {
