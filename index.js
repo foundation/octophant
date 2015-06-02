@@ -51,16 +51,18 @@ module.exports = function(paths, options) {
     }
 
     var outputStream = fs.createWriteStream(outputPath, {flags: 'w'});
-    var title = groups[options.title] || options.title;
 
     // Format title text with custom title
-    titleText = format(titleText, title, repeatChar('-', title.length));
+    titleText = format(titleText, options.title, repeatChar('-', options.title.length));
 
     // Generate the table of contents
     var n = 1;
     for (var i in data) {
+      // Number formatted with leading zero
       var c = n < 10 ? ' '+n : n;
-      titleText += format('\n//  %s. %s', c, i);
+      // Component name
+      var t = groups[i] || i;
+      titleText += format('\n//  %s. %s', c, t);
       n++;
     }
 
