@@ -35,11 +35,6 @@ module.exports = function(paths, options) {
     output: '_settings.scss'
   }, options);
 
-  var groups = {
-    'one': 'Component One',
-    'two': 'Component Two'
-  }
-
   sassdoc.parse(paths, { verbose: true }).then(parse);
 
   function parse(data) {
@@ -62,7 +57,7 @@ module.exports = function(paths, options) {
       // Number formatted with leading zero
       var c = n < 10 ? ' '+n : n;
       // Component name
-      var t = groups[i] || i;
+      var t = options.groups[i] || i;
       titleText += format('\n//  %s. %s', c, t);
       n++;
     }
@@ -73,7 +68,7 @@ module.exports = function(paths, options) {
     // Iterate through each component
     for (var i in data) {
       var group = data[i];
-      var title = groups[i] || i;
+      var title = options.groups[i] || i;
       outputStream.write(format('// %s\n// %s\n\n', title, repeatChar('-', title.length)));
 
       // Iterate through each variable within the component
