@@ -5,13 +5,14 @@
 //   return require('settings-parser')('scss/**/*.scss');
 // });
 
-var extend     = require('util')._extend;
-var format     = require('util').format;
-var fs         = require('fs');
-var repeatChar = require('./lib/repeatChar');
-var multiline  = require('multiline');
-var path       = require('path');
-var sassdoc    = require('sassdoc');
+var extend         = require('util')._extend;
+var format         = require('util').format;
+var fs             = require('fs');
+var repeatChar     = require('./lib/repeatChar');
+var multiline      = require('multiline');
+var path           = require('path');
+var processSassDoc = require('./lib/processSassDoc');
+var sassdoc        = require('sassdoc');
 
 var titleText = multiline(function() {/*
 //  %s
@@ -95,18 +96,4 @@ module.exports = function(paths, options) {
       outputStream.write('\n');
     }
   }
-}
-
-function processSassDoc(tree) {
-  var sass = {};
-
-  for (var i in tree) {
-    var obj = tree[i];
-    var group = obj.group[0];
-
-    if (!sass[group]) sass[group] = [];
-    if (obj.context.type === 'variable') sass[group].push(obj);
-  }
-
-  return sass;
 }
