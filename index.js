@@ -24,10 +24,8 @@ var titleText = multiline(function() {/*
 
 module.exports = function(paths, options) {
   // The plugin must be called with a string or array of globs
-  if (typeof paths === 'undefined') {
-    var err = new gutil.PluginError('foundation-settings-parser', {
-      message: 'you need to specify paths for the plugin to parse.'
-    });
+  if (typeof paths !== 'object') {
+    throw new Error('You need to specify paths for the plugin to parse.');
   }
 
   options = extend({
