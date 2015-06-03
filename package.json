@@ -1,5 +1,5 @@
 {
-  "name": "settings-parser",
+  "name": "foundation-settings-parser",
   "version": "0.1.0",
   "description": "Parses Sass files to generate a settings file with a table of contents.",
   "repository": {
