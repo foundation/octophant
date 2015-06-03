@@ -30,13 +30,14 @@ module.exports = function(paths, options) {
 
   options = extend({
     title:  'Settings',
-    output: '_settings.scss'
+    output: '_settings.scss',
+    groups: {}
   }, options);
 
   sassdoc.parse(paths, { verbose: true }).then(parse);
 
   function parse(data) {
-    var outputPath = path.join(process.cwd(), options.settingsPath);
+    var outputPath = path.join(process.cwd(), options.output);
     data = processSassDoc(data);
 
     // Erase the existing files
