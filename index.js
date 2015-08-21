@@ -6,7 +6,7 @@ var path           = require('path');
 var processSassDoc = require('./lib/processSassDoc');
 var sassdoc        = require('sassdoc');
 
-module.exports = function(paths, options) {
+module.exports = function(paths, options, cb) {
   options = extend({
     title:  'Settings',
     output: '_settings.scss',
@@ -35,5 +35,7 @@ module.exports = function(paths, options) {
       var name = options.groups[i] || i;
       outputStream.write(buildSection(name, data[i]));
     }
+
+    cb();
   }
 }
