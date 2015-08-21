@@ -1,10 +1,3 @@
-// Settings parser
-// This gulp task pulls the variables out of each component's Sass file, and collects them in one settings file.
-// Use it like this:
-// gulp.task('settings', function() {
-//   return require('settings-parser')('scss/**/*.scss');
-// });
-
 var extend         = require('util')._extend;
 var format         = require('util').format;
 var fs             = require('fs');

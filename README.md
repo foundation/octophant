@@ -1,18 +1,10 @@
-# Foundation Settings Parser
+# Octophant
 
-A Node library that collects Sass variables out of many files, and then combines them into one file, grouped by component, with a table of contents at the top. We use it at ZURB with the Foundation family of frameworks, to automatically generate settings files.
+Once banished to ZURB's *Creatures of Nightmare* as a freakish outcast, the Octophant has found its calling as a file generator. Nimble and flexible, the Octophant uses its many trunks to gather a framework's many Sass variables, aggregating them into one file.
 
-## Installation
+We make use of the Octophant's talents at ZURB with the [Foundation](http://foundation.zurb.com) family of front-end frameworks, to automatically generate settings files.
 
-For now the package is not distributed on npm, but it can be installed from GitHub:
-
-```json
-{
-  "devDependencies": {
-    "foundation-settings-parser": "zurb/foundation-settings-parser"
-  }
-}
-```
+To summon the Octophant in your own project, run `npm install octophant`.
 
 ## Setup
 
@@ -57,4 +49,4 @@ An array of files to parse.
 **Type:** `Object`
 
 - `title`: Title to print at the top of the file.
-- `output`: Relative path to output the settings file to.
+- `output`: Path relative to the CWD to output the settings file to.
