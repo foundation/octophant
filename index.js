@@ -17,7 +17,7 @@ module.exports = function(paths, options, cb) {
 
   function parse(data) {
     var outputPath = path.join(process.cwd(), options.output);
-    data = processSassDoc(data);
+    data = processSassDoc(data, options.groups);
 
     // Erase the existing file if necessary
     if (fs.existsSync(outputPath)) {
@@ -27,13 +27,12 @@ module.exports = function(paths, options, cb) {
     var outputStream = fs.createWriteStream(outputPath, {flags: 'w'});
 
     // Generate the table of contents
-    var titleText = buildContents(options.title, Object.keys(data), options.groups);
+    var titleText = buildContents(options.title, Object.keys(data));
     outputStream.write(titleText);
 
     // Iterate through each component
     for (var i in data) {
-      var name = options.groups[i] || i;
-      outputStream.write(buildSection(name, data[i]));
+      outputStream.write(buildSection(i, data[i]));
     }
 
     cb();
