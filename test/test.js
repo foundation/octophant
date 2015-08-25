@@ -1,16 +1,122 @@
-var assert = require('assert');
-var settingsParser = require('../index');
+var assert          = require('assert');
+var multiline       = require('multiline');
+var settingsParser  = require('../index');
+
+var PATHS = './test/*.scss';
+var GROUPS = {
+  one: 'Component One',
+  two: 'Component Two',
+  three: 'Component Three'
+}
+var GROUPNAMES = (function() {
+  var names = [];
+  for (var i in GROUPS) names.push(GROUPS[i]);
+  return names;
+})();
 
 describe('Octophant', function() {
-  it('Generates a settings file out of a set of Sass files', function(cb) {
-    settingsParser('./test/*.scss', {
+  it('Generates a settings file out of a set of Sass files', function(done) {
+    settingsParser(PATHS, {
       title: "Test Settings",
       output: './test/_settings.scss',
-      groups: {
-        one: 'Component One',
-        two: 'Component Two',
-        three: 'Component Three'
-      }
-    }, cb);
+      groups: GROUPS
+    }, done);
+  });
+
+  describe('buildContents', function() {
+    it('builds a table of contents for a settings file', function() {
+      var actual = require('../lib/buildContents.js')('Title', ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']);
+
+      var expected = multiline.stripIndent(function() {/*
+        //  Title
+        //  -----
+        //
+        //  Table of Contents:
+        //
+        //   1. One
+        //   2. Two
+        //   3. Three
+        //   4. Four
+        //   5. Five
+        //   6. Six
+        //   7. Seven
+        //   8. Eight
+        //   9. Nine
+        //  10. Ten
+
+
+      */});
+
+      assert.equal(expected, actual)
+    });
+  });
+
+  describe('buildSection', function() {
+    it('builds a section for a component\'s variables', function() {
+      var actual = require('../lib/buildSection')('Component One', [{
+        context: { name: 'variable-one', value: 'value' }
+      }, {
+        context: { name: 'variable-two', value: 'value' }
+      }]);
+
+      var expected = multiline.stripIndent(function() {/*
+        // Component One
+        // -------------
+
+        // $variable-one: value;
+        // $variable-two: value;
+
+
+      */});
+
+      assert.equal(expected, actual);
+    });
+  });
+
+  describe('commentVariable', function() {
+    it('adds comment marks to single-line a Sass variable', function() {
+      var actual = require('../lib/commentVariable')({
+        context: { name: 'name', value: 'value' }
+      });
+
+      var expected = '// $name: value;\n';
+
+      assert.equal(expected, actual);
+    });
+
+    it('adds comment marks to every line in a multi-line Sass variable', function() {
+      var actual = require('../lib/commentVariable')({
+        context: { name: 'name', value: '(\n  one: one,\n  two: two,\n)' }
+      });
+
+      var expected = multiline.stripIndent(function() {/*
+        // $name: (
+        //   one: one,
+        //   two: two,
+        // );
+
+      */});
+
+      assert.equal(expected, actual);
+    });
+  });
+
+  describe('processSassDoc', function() {
+    it('filters and sorts a series of SassDoc items', function(done) {
+      this.timeout(10000);
+
+      require('sassdoc').parse(PATHS).then(function(data) {
+        data = require('../lib/processSassDoc')(data, GROUPS);
+
+        assert.deepEqual(GROUPNAMES.slice(0, -1), Object.keys(data));
+        done();
+      });
+    });
+  });
+
+  describe('repeatChar', function() {
+    it('repeats a character n times', function() {
+      assert.equal('-----', require('../lib/repeatChar')('-', 5));
+    });
   });
 });
