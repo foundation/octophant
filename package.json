@@ -1,6 +1,6 @@
 {
   "name": "octophant",
-  "version": "0.1.0",
+  "version": "1.0.0-rc.1",
   "description": "Parses Sass files to generate a settings file with a table of contents.",
   "repository": {
     "type": "git",

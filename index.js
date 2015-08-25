@@ -6,14 +6,14 @@ var path           = require('path');
 var processSassDoc = require('./lib/processSassDoc');
 var sassdoc        = require('sassdoc');
 
-module.exports = function(paths, options, cb) {
+module.exports = function(files, options, cb) {
   options = extend({
     title:  'Settings',
     output: '_settings.scss',
     groups: {}
   }, options);
 
-  sassdoc.parse(paths).then(parse);
+  sassdoc.parse(files).then(parse);
 
   function parse(data) {
     var outputPath = path.join(process.cwd(), options.output);
