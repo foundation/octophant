@@ -48,5 +48,12 @@ An array of files to parse.
 
 **Type:** `Object`
 
-- `title`: Title to print at the top of the file.
-- `output`: Path relative to the CWD to output the settings file to.
+- `title` (`String`): Title to print at the top of the file.
+- `output` (`String`): Path relative to the CWD to output the settings file to.
+- `groups` (`Object`): A set of key/value pairs for the sections of the settings file. Each key is a SassDoc group, and the value is an expanded name.
+
+#### cb
+
+**Type:** `Function`
+
+Callback to run when the file has been written to disk.

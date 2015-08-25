@@ -1,26 +1,41 @@
-var assert          = require('assert');
-var multiline       = require('multiline');
-var settingsParser  = require('../index');
+var assert     = require('assert');
+var fs         = require('fs');
+var multiline  = require('multiline');
+var octophant  = require('../index');
 
 var PATHS = './test/*.scss';
+var SETTINGS_PATH = './test/_settings.scss';
+
 var GROUPS = {
   one: 'Component One',
   two: 'Component Two',
   three: 'Component Three'
 }
-var GROUPNAMES = (function() {
-  var names = [];
-  for (var i in GROUPS) names.push(GROUPS[i]);
-  return names;
-})();
 
-describe('Octophant', function() {
+var GROUP_NAMES = [
+  'Component One',
+  'Component Two',
+  'Component Three'
+]
+
+describe('Octophant', function(done) {
+  // Delete the _settings.scss file if one already exists
+  before(function(done) {
+    fs.exists(SETTINGS_PATH, function(exists) {
+      if (exists) fs.unlink(SETTINGS_PATH, done);
+      else done();
+    });
+  });
+
   it('Generates a settings file out of a set of Sass files', function(done) {
-    settingsParser(PATHS, {
+    octophant(PATHS, {
       title: "Test Settings",
-      output: './test/_settings.scss',
+      output: SETTINGS_PATH,
       groups: GROUPS
-    }, done);
+    }, function() {
+      assert(fs.existsSync(SETTINGS_PATH));
+      done();
+    });
   });
 
   describe('buildContents', function() {
@@ -108,7 +123,7 @@ describe('Octophant', function() {
       require('sassdoc').parse(PATHS).then(function(data) {
         data = require('../lib/processSassDoc')(data, GROUPS);
 
-        assert.deepEqual(GROUPNAMES.slice(0, -1), Object.keys(data));
+        assert.deepEqual(GROUP_NAMES.slice(0, -1), Object.keys(data));
         done();
       });
     });
@@ -118,5 +133,10 @@ describe('Octophant', function() {
     it('repeats a character n times', function() {
       assert.equal('-----', require('../lib/repeatChar')('-', 5));
     });
+  });
+
+  // Delete the _settings.scss file created when tests are done
+  after(function(done) {
+    fs.unlink(SETTINGS_PATH, done);
   });
 });
