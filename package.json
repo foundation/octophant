@@ -11,6 +11,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "capitalize": "^1.0.0",
     "multiline": "^1.0.1",
     "sassdoc": "^2.1.11"
   },
