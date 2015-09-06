@@ -20,6 +20,8 @@ $private-value: 10px;
 
 Variables are grouped by component. The component is defined by the `@group` a variable belongs to. The group can be set on individual variables, or on every variable in a file using a poster comment.
 
+When writing the file, Octophant automatically converts hyphens in group names to spaces, and then capitalizes each word. So `menu-bar` becomes `Menu Bar`. You can also define custom names for each group with the `groups` option.
+
 ```scss
 ////
 /// @group button
@@ -36,7 +38,7 @@ $button-color: white;
 
 ### parser(files [, options])
 
-Parses a set of files and creates a new SCSS file with all of the collected variables in one place.
+Parses a set of files and creates a new SCSS file with all of the collected variables in one place. This value is passed directly to the SassDoc parser, which accepts a directory name, or a glob pattern of files.
 
 #### files
 
