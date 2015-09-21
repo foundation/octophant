@@ -3,7 +3,7 @@ var fs         = require('fs');
 var multiline  = require('multiline');
 var octophant  = require('../index');
 
-var PATHS = './test/*.scss';
+var PATHS = './test/fixtures/*.scss';
 var SETTINGS_PATH = './test/_settings.scss';
 
 var GROUPS = {
@@ -25,6 +25,11 @@ describe('Octophant', function(done) {
       if (exists) fs.unlink(SETTINGS_PATH, done);
       else done();
     });
+  });
+
+  // Delete the _settings.scss file created when tests are done
+  after(function(done) {
+    fs.unlink(SETTINGS_PATH, done);
   });
 
   it('Generates a settings file out of a set of Sass files', function(done) {
@@ -133,10 +138,5 @@ describe('Octophant', function(done) {
     it('repeats a character n times', function() {
       assert.equal('-----', require('../lib/repeatChar')('-', 5));
     });
-  });
-
-  // Delete the _settings.scss file created when tests are done
-  after(function(done) {
-    fs.unlink(SETTINGS_PATH, done);
   });
 });
