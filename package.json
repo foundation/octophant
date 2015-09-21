@@ -23,6 +23,5 @@
     "vinyl-map": "^1.0.1"
   },
   "author": "ZURB",
-  "license": "MIT",
-  "private": true
+  "license": "MIT"
 }
