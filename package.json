@@ -17,7 +17,6 @@
   },
   "author": "ZURB",
   "license": "MIT",
-  "private": true,
   "devDependencies": {
     "mocha": "^2.2.5"
   }
