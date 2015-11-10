@@ -15,6 +15,10 @@ module.exports = function(files, options, cb) {
     imports: []
   }, options);
 
+  if (typeof files === 'string') {
+    files = [files];
+  }
+
   sassdoc.parse(files).then(parse);
 
   function parse(data) {
