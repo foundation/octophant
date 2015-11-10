@@ -79,6 +79,7 @@ describe('Octophant', function(done) {
         @import 'one';
         @import 'two';
 
+
       */});
 
       assert.equal(expected, actual);
@@ -87,15 +88,15 @@ describe('Octophant', function(done) {
 
   describe('buildSection', function() {
     it('builds a section for a component\'s variables', function() {
-      var actual = require('../lib/buildSection')('Component One', [{
+      var actual = require('../lib/buildSection')('Component One', 1, [{
         context: { name: 'variable-one', value: 'value' }
       }, {
         context: { name: 'variable-two', value: 'value' }
       }]);
 
       var expected = multiline.stripIndent(function() {/*
-        // Component One
-        // -------------
+        // 1. Component One
+        // ----------------
 
         // $variable-one: value;
         // $variable-two: value;

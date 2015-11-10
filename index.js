@@ -37,8 +37,10 @@ module.exports = function(files, options, cb) {
     outputStream.write(importText);
 
     // Iterate through each component
+    var n = 1;
     for (var i in data) {
-      outputStream.write(buildSection(i, data[i]));
+      outputStream.write(buildSection(i, n, data[i]));
+      n++;
     }
 
     cb();
