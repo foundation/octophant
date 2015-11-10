@@ -1,4 +1,5 @@
 var buildContents  = require('./lib/buildContents');
+var buildImports   = require('./lib/buildImports');
 var buildSection   = require('./lib/buildSection');
 var extend         = require('util')._extend;
 var fs             = require('fs');
@@ -10,7 +11,8 @@ module.exports = function(files, options, cb) {
   options = extend({
     title:  'Settings',
     output: '_settings.scss',
-    groups: {}
+    groups: {},
+    imports: []
   }, options);
 
   sassdoc.parse(files).then(parse);
@@ -29,6 +31,10 @@ module.exports = function(files, options, cb) {
     // Generate the table of contents
     var titleText = buildContents(options.title, Object.keys(data));
     outputStream.write(titleText);
+
+    // Generate the import list
+    var importText = buildImports(options.imports);
+    outputStream.write(importText);
 
     // Iterate through each component
     for (var i in data) {

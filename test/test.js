@@ -71,6 +71,20 @@ describe('Octophant', function(done) {
     });
   });
 
+  describe('buildImports', function() {
+    it('builds a set of Sass import statements', function() {
+      var actual = require('../lib/buildImports')(['one', 'two']);
+
+      var expected = multiline.stripIndent(function() {/*
+        @import 'one';
+        @import 'two';
+
+      */});
+
+      assert.equal(expected, actual);
+    });
+  })
+
   describe('buildSection', function() {
     it('builds a section for a component\'s variables', function() {
       var actual = require('../lib/buildSection')('Component One', [{
