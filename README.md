@@ -1,4 +1,4 @@
-# Octophant
+![Octophant](https://raw.githubusercontent.com/zurb/octophant/master/assets/octophant.jpg)
 
 Once banished to ZURB's *Creatures of Nightmare* as a freakish outcast, the Octophant has found its calling as a file generator. Nimble and flexible, the Octophant uses its many trunks to gather a framework's many Sass variables, aggregating them into one file.
 
@@ -36,7 +36,7 @@ $button-color: white;
 
 ## Usage
 
-### parser(files [, options])
+### parser(files [, options, cb])
 
 Parses a set of files and creates a new SCSS file with all of the collected variables in one place. This value is passed directly to the SassDoc parser, which accepts a directory name, or a glob pattern of files.
 
