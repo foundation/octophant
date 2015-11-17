@@ -12,7 +12,8 @@ module.exports = function(files, options, cb) {
     title:  'Settings',
     output: '_settings.scss',
     groups: {},
-    imports: []
+    imports: [],
+    sort: []
   }, options);
 
   if (typeof files === 'string') {
@@ -23,7 +24,7 @@ module.exports = function(files, options, cb) {
 
   function parse(data) {
     var outputPath = path.join(process.cwd(), options.output);
-    data = processSassDoc(data, options.groups);
+    data = processSassDoc(data, options.groups, options.sort);
 
     // Erase the existing file if necessary
     if (fs.existsSync(outputPath)) {

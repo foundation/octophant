@@ -141,7 +141,7 @@ describe('Octophant', function(done) {
       this.timeout(10000);
 
       require('sassdoc').parse(PATHS).then(function(data) {
-        data = require('../lib/processSassDoc')(data, GROUPS);
+        data = require('../lib/processSassDoc')(data, GROUPS, []);
 
         assert.deepEqual(GROUP_NAMES.slice(0, -1), Object.keys(data));
         done();

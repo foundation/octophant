@@ -11,9 +11,12 @@
     "test": "mocha"
   },
   "dependencies": {
+    "array-move": "^1.0.0",
     "capitalize": "^1.0.0",
     "multiline": "^1.0.1",
-    "sassdoc": "^2.1.11"
+    "sassdoc": "^2.1.11",
+    "sort-array": "^0.1.0",
+    "sort-object": "^3.0.0"
   },
   "author": "ZURB",
   "license": "MIT",
