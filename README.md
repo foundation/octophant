@@ -54,6 +54,7 @@ One or more [globs](https://github.com/isaacs/node-glob) to parse.
 - `output` (`String`): Path relative to the CWD to output the settings file to.
 - `groups` (`Object`): A set of key/value pairs for the sections of the settings file. Each key is a SassDoc group, and the value is an expanded name.
 - `imports` (`Array`): A series of strings which represent Sass libraries to import. These libraries are added as `@import` statements before the first section.
+- `sort` (`Array`): A series of strings which represent sections that should be floated to the top. You don't need to define every group here; groups left out of `sort` will remain alphabetical.
 
 #### cb
 
