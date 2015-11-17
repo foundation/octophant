@@ -98,8 +98,8 @@ describe('Octophant', function(done) {
         // 1. Component One
         // ----------------
 
-        // $variable-one: value;
-        // $variable-two: value;
+        $variable-one: value;
+        $variable-two: value;
 
 
       */});
@@ -108,27 +108,27 @@ describe('Octophant', function(done) {
     });
   });
 
-  describe('commentVariable', function() {
-    it('adds comment marks to single-line a Sass variable', function() {
-      var actual = require('../lib/commentVariable')({
+  describe('buildVariable', function() {
+    it('formats a single-line a Sass variable', function() {
+      var actual = require('../lib/buildVariable')({
         context: { name: 'name', value: 'value' }
       });
 
-      var expected = '// $name: value;\n';
+      var expected = '$name: value;\n';
 
       assert.equal(expected, actual);
     });
 
-    it('adds comment marks to every line in a multi-line Sass variable', function() {
-      var actual = require('../lib/commentVariable')({
+    it('formats a multi-line Sass variable', function() {
+      var actual = require('../lib/buildVariable')({
         context: { name: 'name', value: '(\n  one: one,\n  two: two,\n)' }
       });
 
       var expected = multiline.stripIndent(function() {/*
-        // $name: (
-        //   one: one,
-        //   two: two,
-        // );
+        $name: (
+          one: one,
+          two: two,
+        );
 
       */});
 
