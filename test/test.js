@@ -166,10 +166,4 @@ describe('Octophant', function(done) {
       });
     });
   });
-
-  describe('repeatChar', function() {
-    it('repeats a character n times', function() {
-      assert.equal('-----', require('../lib/repeatChar')('-', 5));
-    });
-  });
 });
