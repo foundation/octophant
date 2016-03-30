@@ -13,7 +13,8 @@ module.exports = function(files, options, cb) {
     output: '_settings.scss',
     groups: {},
     imports: [],
-    sort: []
+    sort: [],
+    _foundationShim: false
   }, options);
 
   if (typeof files === 'string') {
@@ -44,7 +45,7 @@ module.exports = function(files, options, cb) {
     // Iterate through each component
     var n = 1;
     for (var i in data) {
-      outputStream.write(buildSection(i, n, data[i]));
+      outputStream.write(buildSection(i, n, data[i], options._foundationShim));
       n++;
     }
 

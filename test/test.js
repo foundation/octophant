@@ -106,6 +106,24 @@ describe('Octophant', function(done) {
 
       assert.equal(expected, actual);
     });
+
+    it('builds a section with a Foundation-specific shim', function() {
+      var actual = require('../lib/buildSection')('Global Styles', 1, [{
+        context: { name: 'variable-one', value: 'value' }
+      }], true);
+
+      var expected = multiline.stripIndent(function() {/*
+        // 1. Global Styles
+        // ----------------
+
+        $variable-one: value;
+
+        @include add-foundation-colors;
+
+      */});
+
+      assert.equal(expected, actual);
+    });
   });
 
   describe('buildVariable', function() {
