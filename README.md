@@ -1,5 +1,7 @@
 ![Octophant](https://raw.githubusercontent.com/zurb/octophant/master/assets/octophant.jpg)
 
+[![Build Status](https://travis-ci.org/zurb/octophant.svg?branch=master)](https://travis-ci.org/zurb/octophant)
+
 Once banished to ZURB's *Creatures of Nightmare* as a freakish outcast, the Octophant has found its calling as a file generator. Nimble and flexible, the Octophant uses its many trunks to gather a framework's many Sass variables, aggregating them into one file.
 
 We make use of the Octophant's talents at ZURB with the [Foundation](http://foundation.zurb.com) family of front-end frameworks, to automatically generate settings files.
@@ -32,7 +34,7 @@ $button-background: blue;
 
 /// Button color
 $button-color: white;
-``` 
+```
 
 ## Usage
 
