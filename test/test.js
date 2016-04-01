@@ -108,13 +108,13 @@ describe('Octophant', function(done) {
     });
 
     it('builds a section with a Foundation-specific shim', function() {
-      var actual = require('../lib/buildSection')('Global Styles', 1, [{
+      var actual = require('../lib/buildSection')('Global', 1, [{
         context: { name: 'variable-one', value: 'value' }
       }], true);
 
       var expected = multiline.stripIndent(function() {/*
-        // 1. Global Styles
-        // ----------------
+        // 1. Global
+        // ---------
 
         $variable-one: value;
 
