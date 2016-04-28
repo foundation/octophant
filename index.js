@@ -17,6 +17,7 @@ var sassdoc        = require('sassdoc');
  * @param {string[]} options.imports - Sass files to load with `@import`.
  * @param {string[]} options.sort - Custom sort order for component sections.
  * @param {boolean} options._foundationShim - Adds the `@include add-foundation-colors` shim for Foundation for Sites 6.2.
+ * @param {boolean} options.allowDoubleVarnames - if `false` only the first occuring of a variable name is used. Allows overwriting of variable names that occur later in the queue.
  * @param {function} cb - Function to run when the settings file has been written to disk.
  */
 module.exports = function(files, options, cb) {
@@ -26,7 +27,8 @@ module.exports = function(files, options, cb) {
     groups: {},
     imports: [],
     sort: [],
-    _foundationShim: false
+    _foundationShim: false,
+    allowDoubleVarnames: true
   }, options);
 
   if (typeof files === 'string') {
@@ -58,10 +60,10 @@ module.exports = function(files, options, cb) {
     // Generate each component section
     var n = 1;
     for (var i in data) {
-      outputStream.write(buildSection(i, n, data[i], options._foundationShim));
+      outputStream.write(buildSection(i, n, data[i], options._foundationShim, options.allowDoubleVarnames));
       n++;
     }
 
     cb();
   }
-}
+};
