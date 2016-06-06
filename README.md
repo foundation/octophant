@@ -63,3 +63,17 @@ One or more [globs](https://github.com/isaacs/node-glob) to parse.
 **Type:** `Function`
 
 Callback to run when the file has been written to disk.
+
+
+#### Gulp config settings
+If you are using the [Foundation-sites Template](https://github.com/zurb/foundation-sites-template) and your project is starting to get out of control consider adding octophant to generate setting files.
+
+```
+// Generates a Sass settings file from the current codebase
+gulp.task('settings', function() {
+  octophant('/scss/components/**/*.scss', {
+    title: 'Component Settings',
+    output: '/scss/settings/_components.scss'
+  });
+});
+```
