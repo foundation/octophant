@@ -1,9 +1,9 @@
 'use strict';
 
 const fs = require('fs');
-const path = require('path');
 const extend = require('util')._extend;
 const sassdoc = require('sassdoc');
+const cwd = require('prepend-cwd');
 const buildContents = require('./lib/build-contents');
 const buildImports = require('./lib/build-imports');
 const buildSection = require('./lib/build-section');
@@ -38,7 +38,7 @@ module.exports = (files, options, cb) => {
   sassdoc.parse(files).then(parse);
 
   function parse(data) {
-    const outputPath = path.join(process.cwd(), options.output);
+    const outputPath = cwd(options.output);
     data = processSassDoc(data, options.groups, options.sort);
 
     // Erase the existing file if necessary

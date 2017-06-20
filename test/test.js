@@ -7,17 +7,15 @@ const fs = require('fs');
 const expect = require('chai').expect;
 const multiline = require('multiline');
 const stripIndent = require('strip-indent');
+const tempy = require('tempy');
 const octophant = require('..');
 
 const PATHS = './test/fixtures/*.scss';
-const SETTINGS_PATH = './test/_settings.scss';
-
 const GROUPS = {
   one: 'Component One',
   two: 'Component Two',
   three: 'Component Three'
 };
-
 const GROUP_NAMES = [
   'Component One',
   'Component Two',
@@ -27,29 +25,15 @@ const GROUP_NAMES = [
 const strip = str => stripIndent(str).replace(/^\n/, '');
 
 describe('Octophant', () => {
-  // Delete the _settings.scss file if one already exists
-  before(done => {
-    fs.exists(SETTINGS_PATH, exists => {
-      if (exists) {
-        fs.unlink(SETTINGS_PATH, done);
-      } else {
-        done();
-      }
-    });
-  });
-
-  // Delete the _settings.scss file created when tests are done
-  after(done => {
-    fs.unlink(SETTINGS_PATH, done);
-  });
-
   it('Generates a settings file out of a set of Sass files', done => {
+    const outputFile = tempy.file();
+
     octophant(PATHS, {
       title: 'Test Settings',
-      output: SETTINGS_PATH,
+      output: outputFile,
       groups: GROUPS
     }, () => {
-      expect(fs.existsSync(SETTINGS_PATH)).to.equal(true);
+      expect(fs.existsSync(outputFile)).to.equal(true);
       done();
     });
   });
