@@ -3,8 +3,8 @@
 
 'use strict';
 
-const assert = require('assert');
 const fs = require('fs');
+const expect = require('chai').expect;
 const multiline = require('multiline');
 const stripIndent = require('strip-indent');
 const octophant = require('..');
@@ -49,7 +49,7 @@ describe('Octophant', () => {
       output: SETTINGS_PATH,
       groups: GROUPS
     }, () => {
-      assert(fs.existsSync(SETTINGS_PATH));
+      expect(fs.existsSync(SETTINGS_PATH)).to.equal(true);
       done();
     });
   });
@@ -78,7 +78,7 @@ describe('Octophant', () => {
 
       */});
 
-      assert.equal(expected, actual);
+      expect(actual).to.equal(expected);
     });
   });
 
@@ -92,7 +92,7 @@ describe('Octophant', () => {
 
         `);
 
-      assert.equal(actual, expected);
+      expect(actual).to.equal(expected);
     });
   });
 
@@ -120,7 +120,7 @@ describe('Octophant', () => {
 
       */});
 
-      assert.equal(expected, actual);
+      expect(actual).to.equal(expected);
     });
 
     it('builds a section with a Foundation-specific shim', () => {
@@ -141,7 +141,7 @@ describe('Octophant', () => {
 
       */});
 
-      assert.equal(expected, actual);
+      expect(actual).to.equal(expected);
     });
   });
 
@@ -156,7 +156,7 @@ describe('Octophant', () => {
 
       const expected = '$name: value;\n';
 
-      assert.equal(expected, actual);
+      expect(actual).to.equal(expected);
     });
 
     it('formats a multi-line Sass variable', () => {
@@ -175,7 +175,7 @@ describe('Octophant', () => {
 
       */});
 
-      assert.equal(expected, actual);
+      expect(actual).to.equal(expected);
     });
   });
 
@@ -186,7 +186,7 @@ describe('Octophant', () => {
       require('sassdoc').parse(PATHS).then(data => {
         data = require('../lib/process-sassdoc')(data, GROUPS, []);
 
-        assert.deepEqual(GROUP_NAMES.slice(0, -1), Object.keys(data));
+        expect(Object.keys(data)).to.eql(GROUP_NAMES.slice(0, -1));
         done();
       });
     });
