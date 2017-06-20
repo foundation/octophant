@@ -5,7 +5,6 @@
 
 const fs = require('fs');
 const expect = require('chai').expect;
-const multiline = require('multiline');
 const stripIndent = require('strip-indent');
 const tempy = require('tempy');
 const values = require('lodash.values');
@@ -38,7 +37,7 @@ describe('Octophant', () => {
     it('builds a table of contents for a settings file', () => {
       const actual = require('../lib/build-contents.js')('Title', ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']);
 
-      const expected = multiline.stripIndent(() => {/*
+      const expected = strip(`
         //  Title
         //  -----
         //
@@ -55,8 +54,7 @@ describe('Octophant', () => {
         //   9. Nine
         //  10. Ten
 
-
-      */});
+`);
 
       expect(actual).to.equal(expected);
     });
@@ -70,7 +68,8 @@ describe('Octophant', () => {
         @import 'one';
         @import 'two';
 
-        `);
+
+`);
 
       expect(actual).to.equal(expected);
     });
@@ -90,15 +89,14 @@ describe('Octophant', () => {
         }
       }]);
 
-      const expected = multiline.stripIndent(() => {/*
+      const expected = strip(`
         // 1. Component One
         // ----------------
 
         $variable-one: value;
         $variable-two: value;
 
-
-      */});
+`);
 
       expect(actual).to.equal(expected);
     });
@@ -111,15 +109,14 @@ describe('Octophant', () => {
         }
       }], true);
 
-      const expected = multiline.stripIndent(() => {/*
+      const expected = strip(`
         // 1. Global
         // ---------
 
         $variable-one: value;
 
         @include add-foundation-colors;
-
-      */});
+`);
 
       expect(actual).to.equal(expected);
     });
@@ -147,13 +144,12 @@ describe('Octophant', () => {
         }
       });
 
-      const expected = multiline.stripIndent(() => {/*
+      const expected = strip(`
         $name: (
           one: one,
           two: two,
         );
-
-      */});
+`);
 
       expect(actual).to.equal(expected);
     });
