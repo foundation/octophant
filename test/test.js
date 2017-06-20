@@ -9,6 +9,10 @@ const stripIndent = require('strip-indent');
 const tempy = require('tempy');
 const values = require('lodash.values');
 const octophant = require('..');
+const buildContents = require('../lib/build-contents');
+const buildImports = require('../lib/build-imports');
+const buildSection = require('../lib/build-section');
+const processSassDoc = require('../lib/process-sassdoc');
 
 const PATHS = './test/fixtures/*.scss';
 const GROUPS = {
@@ -33,9 +37,9 @@ describe('Octophant', () => {
     });
   });
 
-  describe('buildContents', () => {
+  describe('buildContents()', () => {
     it('builds a table of contents for a settings file', () => {
-      const actual = require('../lib/build-contents.js')('Title', ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']);
+      const actual = buildContents('Title', ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']);
 
       const expected = strip(`
         //  Title
@@ -60,9 +64,9 @@ describe('Octophant', () => {
     });
   });
 
-  describe('buildImports', () => {
+  describe('buildImports()', () => {
     it('builds a set of Sass import statements', () => {
-      const actual = require('../lib/build-imports')(['one', 'two']);
+      const actual = buildImports(['one', 'two']);
 
       const expected = strip(`
         @import 'one';
@@ -75,9 +79,9 @@ describe('Octophant', () => {
     });
   });
 
-  describe('buildSection', () => {
+  describe('buildSection()', () => {
     it('builds a section for a component\'s variables', () => {
-      const actual = require('../lib/build-section')('Component One', 1, [{
+      const actual = buildSection('Component One', 1, [{
         context: {
           name: 'variable-one',
           value: 'value'
@@ -102,7 +106,7 @@ describe('Octophant', () => {
     });
 
     it('builds a section with a Foundation-specific shim', () => {
-      const actual = require('../lib/build-section')('Global', 1, [{
+      const actual = buildSection('Global', 1, [{
         context: {
           name: 'variable-one',
           value: 'value'
@@ -122,7 +126,7 @@ describe('Octophant', () => {
     });
   });
 
-  describe('buildVariable', () => {
+  describe('buildVariable()', () => {
     it('formats a single-line a Sass variable', () => {
       const actual = require('../lib/build-variable')({
         context: {
@@ -155,13 +159,13 @@ describe('Octophant', () => {
     });
   });
 
-  describe('processSassDoc', () => {
+  describe('processSassDoc()', () => {
     it('filters and sorts a series of SassDoc items', function (done) {
       this.timeout(10000);
 
       require('sassdoc').parse(PATHS).then(data => {
         const groupNames = values(GROUPS);
-        data = require('../lib/process-sassdoc')(data, GROUPS, []);
+        data = processSassDoc(data, GROUPS, []);
 
         expect(Object.keys(data)).to.eql(groupNames.slice(0, -1));
         done();
