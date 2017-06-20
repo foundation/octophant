@@ -1,53 +1,64 @@
-var assert     = require('assert');
-var fs         = require('fs');
-var multiline  = require('multiline');
-var octophant  = require('../index');
+/* eslint-env mocha */
+/* eslint-disable no-multiple-empty-lines */
 
-var PATHS = './test/fixtures/*.scss';
-var SETTINGS_PATH = './test/_settings.scss';
+'use strict';
 
-var GROUPS = {
+const assert = require('assert');
+const fs = require('fs');
+const multiline = require('multiline');
+const stripIndent = require('strip-indent');
+const octophant = require('..');
+
+const PATHS = './test/fixtures/*.scss';
+const SETTINGS_PATH = './test/_settings.scss';
+
+const GROUPS = {
   one: 'Component One',
   two: 'Component Two',
   three: 'Component Three'
-}
+};
 
-var GROUP_NAMES = [
+const GROUP_NAMES = [
   'Component One',
   'Component Two',
   'Component Three'
-]
+];
 
-describe('Octophant', function(done) {
+const strip = str => stripIndent(str).replace(/^\n/, '');
+
+describe('Octophant', () => {
   // Delete the _settings.scss file if one already exists
-  before(function(done) {
-    fs.exists(SETTINGS_PATH, function(exists) {
-      if (exists) fs.unlink(SETTINGS_PATH, done);
-      else done();
+  before(done => {
+    fs.exists(SETTINGS_PATH, exists => {
+      if (exists) {
+        fs.unlink(SETTINGS_PATH, done);
+      } else {
+        done();
+      }
     });
   });
 
   // Delete the _settings.scss file created when tests are done
-  after(function(done) {
+  after(done => {
     fs.unlink(SETTINGS_PATH, done);
   });
 
-  it('Generates a settings file out of a set of Sass files', function(done) {
+  it('Generates a settings file out of a set of Sass files', done => {
     octophant(PATHS, {
-      title: "Test Settings",
+      title: 'Test Settings',
       output: SETTINGS_PATH,
       groups: GROUPS
-    }, function() {
+    }, () => {
       assert(fs.existsSync(SETTINGS_PATH));
       done();
     });
   });
 
-  describe('buildContents', function() {
-    it('builds a table of contents for a settings file', function() {
-      var actual = require('../lib/buildContents.js')('Title', ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']);
+  describe('buildContents', () => {
+    it('builds a table of contents for a settings file', () => {
+      const actual = require('../lib/build-contents.js')('Title', ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']);
 
-      var expected = multiline.stripIndent(function() {/*
+      const expected = multiline.stripIndent(() => {/*
         //  Title
         //  -----
         //
@@ -67,34 +78,39 @@ describe('Octophant', function(done) {
 
       */});
 
-      assert.equal(expected, actual)
+      assert.equal(expected, actual);
     });
   });
 
-  describe('buildImports', function() {
-    it('builds a set of Sass import statements', function() {
-      var actual = require('../lib/buildImports')(['one', 'two']);
+  describe('buildImports', () => {
+    it('builds a set of Sass import statements', () => {
+      const actual = require('../lib/build-imports')(['one', 'two']);
 
-      var expected = multiline.stripIndent(function() {/*
+      const expected = strip(`
         @import 'one';
         @import 'two';
 
+        `);
 
-      */});
-
-      assert.equal(expected, actual);
+      assert.equal(actual, expected);
     });
-  })
+  });
 
-  describe('buildSection', function() {
-    it('builds a section for a component\'s variables', function() {
-      var actual = require('../lib/buildSection')('Component One', 1, [{
-        context: { name: 'variable-one', value: 'value' }
+  describe('buildSection', () => {
+    it('builds a section for a component\'s variables', () => {
+      const actual = require('../lib/build-section')('Component One', 1, [{
+        context: {
+          name: 'variable-one',
+          value: 'value'
+        }
       }, {
-        context: { name: 'variable-two', value: 'value' }
+        context: {
+          name: 'variable-two',
+          value: 'value'
+        }
       }]);
 
-      var expected = multiline.stripIndent(function() {/*
+      const expected = multiline.stripIndent(() => {/*
         // 1. Component One
         // ----------------
 
@@ -107,12 +123,15 @@ describe('Octophant', function(done) {
       assert.equal(expected, actual);
     });
 
-    it('builds a section with a Foundation-specific shim', function() {
-      var actual = require('../lib/buildSection')('Global', 1, [{
-        context: { name: 'variable-one', value: 'value' }
+    it('builds a section with a Foundation-specific shim', () => {
+      const actual = require('../lib/build-section')('Global', 1, [{
+        context: {
+          name: 'variable-one',
+          value: 'value'
+        }
       }], true);
 
-      var expected = multiline.stripIndent(function() {/*
+      const expected = multiline.stripIndent(() => {/*
         // 1. Global
         // ---------
 
@@ -126,23 +145,29 @@ describe('Octophant', function(done) {
     });
   });
 
-  describe('buildVariable', function() {
-    it('formats a single-line a Sass variable', function() {
-      var actual = require('../lib/buildVariable')({
-        context: { name: 'name', value: 'value' }
+  describe('buildVariable', () => {
+    it('formats a single-line a Sass variable', () => {
+      const actual = require('../lib/build-variable')({
+        context: {
+          name: 'name',
+          value: 'value'
+        }
       });
 
-      var expected = '$name: value;\n';
+      const expected = '$name: value;\n';
 
       assert.equal(expected, actual);
     });
 
-    it('formats a multi-line Sass variable', function() {
-      var actual = require('../lib/buildVariable')({
-        context: { name: 'name', value: '(\n  one: one,\n  two: two,\n)' }
+    it('formats a multi-line Sass variable', () => {
+      const actual = require('../lib/build-variable')({
+        context: {
+          name: 'name',
+          value: '(\n  one: one,\n  two: two,\n)'
+        }
       });
 
-      var expected = multiline.stripIndent(function() {/*
+      const expected = multiline.stripIndent(() => {/*
         $name: (
           one: one,
           two: two,
@@ -154,12 +179,12 @@ describe('Octophant', function(done) {
     });
   });
 
-  describe('processSassDoc', function() {
-    it('filters and sorts a series of SassDoc items', function(done) {
+  describe('processSassDoc', () => {
+    it('filters and sorts a series of SassDoc items', function (done) {
       this.timeout(10000);
 
-      require('sassdoc').parse(PATHS).then(function(data) {
-        data = require('../lib/processSassDoc')(data, GROUPS, []);
+      require('sassdoc').parse(PATHS).then(data => {
+        data = require('../lib/process-sassdoc')(data, GROUPS, []);
 
         assert.deepEqual(GROUP_NAMES.slice(0, -1), Object.keys(data));
         done();

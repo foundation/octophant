@@ -1,11 +1,13 @@
-var buildContents  = require('./lib/buildContents');
-var buildImports   = require('./lib/buildImports');
-var buildSection   = require('./lib/buildSection');
-var extend         = require('util')._extend;
-var fs             = require('fs');
-var path           = require('path');
-var processSassDoc = require('./lib/processSassDoc');
-var sassdoc        = require('sassdoc');
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const extend = require('util')._extend;
+const sassdoc = require('sassdoc');
+const buildContents = require('./lib/build-contents');
+const buildImports = require('./lib/build-imports');
+const buildSection = require('./lib/build-section');
+const processSassDoc = require('./lib/process-sassdoc');
 
 /**
  * Produces a Sass settings file from a set of Sass files, and writes it to disk.
@@ -19,9 +21,9 @@ var sassdoc        = require('sassdoc');
  * @param {boolean} options._foundationShim - Adds the `@include add-foundation-colors` shim for Foundation for Sites 6.2.
  * @param {function} cb - Function to run when the settings file has been written to disk.
  */
-module.exports = function(files, options, cb) {
+module.exports = (files, options, cb) => {
   options = extend({
-    title:  'Settings',
+    title: 'Settings',
     output: '_settings.scss',
     groups: {},
     imports: [],
@@ -36,7 +38,7 @@ module.exports = function(files, options, cb) {
   sassdoc.parse(files).then(parse);
 
   function parse(data) {
-    var outputPath = path.join(process.cwd(), options.output);
+    const outputPath = path.join(process.cwd(), options.output);
     data = processSassDoc(data, options.groups, options.sort);
 
     // Erase the existing file if necessary
@@ -45,23 +47,21 @@ module.exports = function(files, options, cb) {
     }
 
     // Create a stream to write the settings file to
-    var outputStream = fs.createWriteStream(outputPath, {flags: 'w'});
+    const outputStream = fs.createWriteStream(outputPath, {flags: 'w'});
 
     // Generate the table of contents
-    var titleText = buildContents(options.title, Object.keys(data));
+    const titleText = buildContents(options.title, Object.keys(data));
     outputStream.write(titleText);
 
     // Generate the import list
-    var importText = buildImports(options.imports);
+    const importText = buildImports(options.imports);
     outputStream.write(importText);
 
     // Generate each component section
-    var n = 1;
-    for (var i in data) {
-      outputStream.write(buildSection(i, n, data[i], options._foundationShim));
-      n++;
+    for (let i = 0; i < data.length; i++) {
+      outputStream.write(buildSection(i, i + 1, data[i], options._foundationShim));
     }
 
     cb();
   }
-}
+};

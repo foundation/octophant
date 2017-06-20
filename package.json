@@ -8,18 +8,26 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "xo && mocha"
   },
   "dependencies": {
     "array-move": "^1.0.0",
     "capitalize": "^1.0.0",
     "multiline": "^1.0.1",
     "repeat-string": "^1.5.4",
-    "sassdoc": "^2.1.11"
+    "sassdoc": "^2.1.11",
+    "strip-indent": "^2.0.0"
   },
   "author": "ZURB",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "xo": "^0.18.2"
+  },
+  "engines": {
+    "node": ">= 4"
+  },
+  "xo": {
+    "space": true
   }
 }
