@@ -1,10 +1,10 @@
 {
   "name": "octophant",
   "version": "1.0.2",
-  "description": "Parses Sass files to generate a settings file with a table of contents.",
+  "description": "Create a settings file from a codebase",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zurb/foundation-settings-parser.git"
+    "url": "https://github.com/zurb/octophant.git"
   },
   "main": "index.js",
   "scripts": {
@@ -18,8 +18,12 @@
     "sassdoc": "^2.1.11",
     "strip-indent": "^2.0.0"
   },
-  "author": "ZURB",
+  "author": "ZURB <foundation@zurb.com> (http://zurb.com)",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zurb/octophant/issues"
+  },
+  "homepage": "https://github.com/zurb/octophant#readme",
   "devDependencies": {
     "chai": "^4.0.2",
     "lodash.values": "^4.3.0",
@@ -28,7 +32,7 @@
     "xo": "^0.18.2"
   },
   "engines": {
-    "node": ">= 4"
+    "node": ">=4"
   },
   "xo": {
     "space": true
