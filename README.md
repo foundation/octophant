@@ -1,14 +1,22 @@
-![Octophant](https://raw.githubusercontent.com/zurb/octophant/master/assets/octophant.jpg)
+<h1 align="center">
+  <img src="https://raw.githubusercontent.com/zurb/octophant/master/assets/octophant.jpg" alt="Octophant">
+</h1>
 
-[![Build Status](https://travis-ci.org/zurb/octophant.svg?branch=master)](https://travis-ci.org/zurb/octophant)
+> Create a settings file from a Sass codebase
+
+[![Travis](https://travis-ci.org/zurb/octophant.svg?branch=master)](https://travis-ci.org/zurb/octophant) [![npm](https://img.shields.io/npm/v/paint-by-number.svg?maxAge=2592000)](https://www.npmjs.com/package/octophant)
 
 Once banished to ZURB's *Creatures of Nightmare* as a freakish outcast, the Octophant has found its calling as a file generator. Nimble and flexible, the Octophant uses its many trunks to gather a framework's many Sass variables, aggregating them into one file.
 
 We make use of the Octophant's talents at ZURB with the [Foundation](http://foundation.zurb.com) family of front-end frameworks, to automatically generate settings files.
 
-To summon the Octophant in your own project, run `npm install octophant`.
+## Installation
 
-## Setup
+```bash
+npm install octophant
+```
+
+## Usage
 
 Variables are parsed using SassDoc, which means any variable you want to be found must be documented with a comment that has three slashes.
 
@@ -36,9 +44,9 @@ $button-background: blue;
 $button-color: white;
 ```
 
-## Usage
+## API
 
-### parser(files [, options, cb])
+### octophant(files [, options, cb])
 
 Parses a set of files and creates a new SCSS file with all of the collected variables in one place. This value is passed directly to the SassDoc parser, which accepts a directory name, or a glob pattern of files.
 
@@ -46,7 +54,7 @@ Parses a set of files and creates a new SCSS file with all of the collected vari
 
 **Type:** `Array` or `String`
 
-One or more [globs](https://github.com/isaacs/node-glob) to parse.
+One or more [globs](https://github.com/isaacs/node-glob) to parse. Every annotated Sass variable found in these files will be included in the final settings file.
 
 #### options
 
@@ -63,3 +71,16 @@ One or more [globs](https://github.com/isaacs/node-glob) to parse.
 **Type:** `Function`
 
 Callback to run when the file has been written to disk.
+
+## Local Development
+
+```bash
+git clone https://github.com/zurb/octophant
+cd octophant
+npm install
+npm test
+```
+
+## License
+
+MIT &copy; [ZURB](http://zurb.com)

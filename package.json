@@ -1,7 +1,7 @@
 {
   "name": "octophant",
   "version": "1.0.2",
-  "description": "Create a settings file from a codebase",
+  "description": "Create a settings file from a Sass codebase",
   "repository": {
     "type": "git",
     "url": "https://github.com/zurb/octophant.git"
