@@ -8,6 +8,7 @@ const expect = require('chai').expect;
 const multiline = require('multiline');
 const stripIndent = require('strip-indent');
 const tempy = require('tempy');
+const values = require('lodash.values');
 const octophant = require('..');
 
 const PATHS = './test/fixtures/*.scss';
@@ -16,11 +17,6 @@ const GROUPS = {
   two: 'Component Two',
   three: 'Component Three'
 };
-const GROUP_NAMES = [
-  'Component One',
-  'Component Two',
-  'Component Three'
-];
 
 const strip = str => stripIndent(str).replace(/^\n/, '');
 
@@ -168,9 +164,10 @@ describe('Octophant', () => {
       this.timeout(10000);
 
       require('sassdoc').parse(PATHS).then(data => {
+        const groupNames = values(GROUPS);
         data = require('../lib/process-sassdoc')(data, GROUPS, []);
 
-        expect(Object.keys(data)).to.eql(GROUP_NAMES.slice(0, -1));
+        expect(Object.keys(data)).to.eql(groupNames.slice(0, -1));
         done();
       });
     });
