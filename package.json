@@ -1,6 +1,6 @@
 {
   "name": "octophant",
-  "version": "1.0.2",
+  "version": "2.0.0-alpha.1",
   "description": "Create a settings file from a Sass codebase",
   "repository": {
     "type": "git",
