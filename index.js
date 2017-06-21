@@ -58,8 +58,10 @@ module.exports = (files, options) => {
     outputStream.write(importText);
 
     // Generate each component section
-    for (let i = 0; i < data.length; i++) {
-      outputStream.write(buildSection(i, i + 1, data[i], options._foundationShim));
+    const groupNames = Object.keys(data);
+    for (let i = 0; i < groupNames.length; i++) {
+      const key = groupNames[i];
+      outputStream.write(buildSection(key, i + 1, data[key], options._foundationShim));
     }
   }
 };
