@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs');
-const extend = require('util')._extend;
+const assign = require('lodash.assign');
 const sassdoc = require('sassdoc');
 const cwd = require('prepend-cwd');
 const buildContents = require('./lib/build-contents');
@@ -19,10 +19,10 @@ const processSassDoc = require('./lib/process-sassdoc');
  * @param {string[]} options.imports - Sass files to load with `@import`.
  * @param {string[]} options.sort - Custom sort order for component sections.
  * @param {boolean} options._foundationShim - Adds the `@include add-foundation-colors` shim for Foundation for Sites 6.2.
- * @param {function} cb - Function to run when the settings file has been written to disk.
+ * @returns {Promise} Promise which resolves when the settings file has been written to disk.
  */
-module.exports = (files, options, cb) => {
-  options = extend({
+module.exports = (files, options) => {
+  options = assign({
     title: 'Settings',
     output: '_settings.scss',
     groups: {},
@@ -35,7 +35,7 @@ module.exports = (files, options, cb) => {
     files = [files];
   }
 
-  sassdoc.parse(files).then(parse);
+  return sassdoc.parse(files).then(parse);
 
   function parse(data) {
     const outputPath = cwd(options.output);
@@ -61,7 +61,5 @@ module.exports = (files, options, cb) => {
     for (let i = 0; i < data.length; i++) {
       outputStream.write(buildSection(i, i + 1, data[i], options._foundationShim));
     }
-
-    cb();
   }
 };

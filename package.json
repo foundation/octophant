@@ -13,6 +13,7 @@
   "dependencies": {
     "array-move": "^1.0.0",
     "capitalize": "^1.0.0",
+    "lodash.assign": "^4.2.0",
     "prepend-cwd": "^1.0.0",
     "repeat-string": "^1.5.4",
     "sassdoc": "^2.1.11",

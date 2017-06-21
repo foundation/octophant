@@ -24,16 +24,15 @@ const GROUPS = {
 const strip = str => stripIndent(str).replace(/^\n/, '');
 
 describe('Octophant', () => {
-  it('Generates a settings file out of a set of Sass files', done => {
+  it('Generates a settings file out of a set of Sass files', () => {
     const outputFile = tempy.file();
 
-    octophant(PATHS, {
+    return octophant(PATHS, {
       title: 'Test Settings',
       output: outputFile,
       groups: GROUPS
-    }, () => {
+    }).then(() => {
       expect(fs.existsSync(outputFile)).to.equal(true);
-      done();
     });
   });
 
@@ -160,9 +159,7 @@ describe('Octophant', () => {
   });
 
   describe('processSassDoc()', () => {
-    it('filters and sorts a series of SassDoc items', function (done) {
-      this.timeout(10000);
-
+    it('filters and sorts a series of SassDoc items', done => {
       require('sassdoc').parse(PATHS).then(data => {
         const groupNames = values(GROUPS);
         data = processSassDoc(data, GROUPS, []);

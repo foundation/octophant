@@ -66,11 +66,7 @@ One or more [globs](https://github.com/isaacs/node-glob) to parse. Every annotat
 - `imports` (`Array`): A series of strings which represent Sass libraries to import. These libraries are added as `@import` statements before the first section.
 - `sort` (`Array`): A series of strings which represent sections that should be floated to the top. You don't need to define every group here; groups left out of `sort` will remain alphabetical.
 
-#### cb
-
-**Type:** `Function`
-
-Callback to run when the file has been written to disk.
+Returns a Promise which resolves when the settings file has been written to disk.
 
 ## Local Development
 
